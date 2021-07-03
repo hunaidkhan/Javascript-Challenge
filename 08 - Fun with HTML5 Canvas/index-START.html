@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+  <style>
+    *{
+      overflow: hidden;
+    }
+    canvas{
+      width: 100%;
+      border: 5px solid black;
+    }
+  </style>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.querySelector("#draw");
+  //this canvas works like MS Paint except that we don't draw directly onto the canvas we draw on a context element.
+  const ctx = canvas.getContext('2d'); //you can also use a 3d canvas
+  //resizing the canvas to fit the whole screen
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  ctx.strokeStyle = "#BADA55"; //this sets the color of the stroke
+  ctx.lineJoin = "round"; //when two lines meet, should it be squared off or rounded?
+  ctx.lineCap = "round";  //sets rounded endcaps
+  ctx.lineWidth = "100";
+  let isDrawing = false; //this is like a flag which turns true when you press the mouse
+  
+  //this stores the coordinates of where the mouse was pressed and is used to set - from where will the line starts
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0; //this variable is used for changing the color. we are using hsl instead of rgb here as it allows us to set the hue which is in a single number format and so we can increment it to change the stroke color as the mouse moves.
+  let direction = true;
+
+  //our main function
+  function draw(e)
+  {
+    if(!isDrawing) return; //this ensures that this function is executed only when isDrawing = true as set by the mousedown event
+    console.log(e);
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; //sets the color of the stroke
+
+    //standard function calls for setting up the canvas
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    //this changes the coordinates from the original click to the next click
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+
+    hue++; //increases the hue
+
+    //this if-block allows us to increase or decrease the line width as the cursor moves. this direction variable is a flag which turns false when the line width increases to 100.
+    if(ctx.lineWidth >=100 || ctx.lineWidth <=1)
+    {
+      direction = !direction;
+    }
+
+    //this following if-block increases or decreases the line width according to the direction variable value in boolean.
+    if(direction)
+    {
+      ctx.lineWidth++;
+    }
+    else{
+      ctx.lineWidth--;
+    }
+
+  }
+
+  //my event listeneres
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true; //sets the flag variable to true
+    //stores the coordinates of the click
+    lastX = e.offsetX; 
+    lastY = e.offsetY;
+  });
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing=false);
+  canvas.addEventListener('mouseout', () => isDrawing=false);
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>

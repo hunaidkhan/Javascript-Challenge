@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+  let key_sequence =[];
+  let EQUALITY_FLAG = false;
+  
+  window.addEventListener("keyup", function(e){
+    let key_match = [];
+    let ARRAY_FLAG = true;
+    const KONAMI = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+    
+    console.log(e.keyCode);
+    console.log(e.keyCode);
+    key_sequence.push(e.keyCode);
+    console.log(key_sequence);
+    const length = key_sequence.length;
+    const start_index = (length)- 10;
+    for(let i = start_index; i<length;i++)
+    {
+      key_match.push(key_sequence[i]);
+    }
+    console.log(key_match);
+    for(let i=0; i<10; i++)
+    {
+      if(key_match[i]!=KONAMI[i])
+      {
+        EQUALITY_FLAG = false;
+        break;
+      }
+      EQUALITY_FLAG = true;
+      continue;
+    }
+    if(EQUALITY_FLAG)
+    {
+      console.log("successfully KONAMI'ed");
+      // document.querySelector('body').style.backgroundColor = "red";
+    }
+
+  })
+
+
+</script>
+</body>
+</html>
