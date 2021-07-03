@@ -47,8 +47,57 @@
 
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+const display = document.querySelector("#bands");
+function removeArticles(word){
+  if(word.includes("The")){
+    word = word.concat(" The ")
+    return word.replace("The ", "");
+  }
+  if(word.includes("A ")){
+    word = word.concat(" A ");
+    return word.replace("A ", "");
+  }
+  if(word.includes("An ")){
+    word = word.concat(" An ")
+    return word.replace("An ", "");
+  }
+  else{
+    return word;
+  }
+}
 
+let sortedBand = bands.sort((a,b) => removeArticles(a) > removeArticles(b) ? 1 : -1)
+display.innerHTML = sortedBand.map(item => {
+  return `<li>${item}</li>`
+}).join("");
 
+//Approach 2 - Longer and naiver
+// function addArticles(word){
+  //   if(word.includes(" The ")){
+    //     word = word.replace("The", "");
+//     word = "The " + word;
+//     return word;
+//   }
+//   if(word.includes(" A ")){
+//     word = word.replace(" A ", "");
+//     word = "A " + word;
+//     return word;
+//   }
+//   if(word.includes(" An ")){
+//     word = word.replace(" An ", "");
+//     word = "An " + word;
+//     return word;
+//   }
+//   else{
+//     return word;
+//   }
+// }
+// let sortedBand = bands.map(item => removeArticles(item));
+// sortedBand = sortedBand.sort();
+// finalBand = sortedBand.map(item => addArticles(item));
+// display.innerHTML = finalBand.map(item => {
+//   return `<li>${item}</li>`
+// }).join("");
 </script>
 
 </body>
